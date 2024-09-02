@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .form-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        .form-container h2 {
+            margin-top: 0;
+        }
+        .form-container label {
+            display: block;
+            margin-bottom: 8px;
+        }
+        .form-container input, .form-container select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form-container input[type="submit"] {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .form-container input[type="submit"]:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Registration Form</h2>
+        <form id="registration-form" method="POST" >
+            {% csrf_token %} 
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" placeholder="1234567890">
+
+            <label for="dob">Date of Birth:</label>
+            <input type="date" id="dob" name="dob">
+
+            <label for="contact-method">Preferred Contact Method:</label>
+            <select id="contact-method" name="contact-method">
+                <option value="email">Email</option>
+                <option value="phone">Phone</option>
+            </select>
+
+            <input type="submit" value="Register">
+        </form>
+    </div>
+    <script>
+        alert("welcome to registeration menu");
+       // Ensure the form is submitted
+ 
+       document.getElementById('registration-form').onsubmit = function() {
+        alert("THANKS FOR REGISTRATION");
+        return true; // Ensure the form is submitted
+    };
+    </script>
+</body>
+</html>

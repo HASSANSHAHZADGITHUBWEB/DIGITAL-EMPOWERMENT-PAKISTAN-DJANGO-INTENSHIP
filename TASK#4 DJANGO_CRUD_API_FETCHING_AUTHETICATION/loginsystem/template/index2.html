@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="SEO" content="Search Engine optimization">
+    <title>Enhanced Django Authentication System</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #f8f9fa, #e9ecef);
+            color: #343a40;
+        }
+
+        #header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        #heading_tag {
+            font-size: 24px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .content_related_system {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        #moving_text {
+            font-size: 18px;
+            max-width: 600px;
+            text-align: center;
+            color: #495057;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 2px solid #007bff;
+            animation: typing 4s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+            to {
+                width: 100%;
+            }
+        }
+
+        @keyframes blink-caret {
+            from, to {
+                border-color: transparent;
+            }
+            50% {
+                border-color: #007bff;
+            }
+        }
+
+        .table_div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .table_div label {
+            font-size: 16px;
+            margin-bottom: 8px;
+            display: block;
+            color: #343a40;
+        }
+
+        .table_div input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .btn_login {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn_login:hover {
+            background-color: #0056b3;
+        }
+
+        .btn_register {
+            background-color: #28a745;
+        }
+
+        .btn_register:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div id="header">
+        <h1 id="heading_tag">DJANGO AUTHENTICATION SYSTEM</h1>
+    </div>
+    <div class="content_related_system">
+        <p id="moving_text">
+            Easily manage your login and sign-in processes while performing CRUD operations with MySQL.
+        </p>
+    </div>
+    <div class="table_div">
+        <form method="POST">
+            {% csrf_token %}
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required/>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required/>
+
+            <div class="btn">
+                <button type="submit" class="btn_login">Login</button>
+               
+                <a href="reg"> <button type="button" class="btn_login btn_register"  >Register</button></a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

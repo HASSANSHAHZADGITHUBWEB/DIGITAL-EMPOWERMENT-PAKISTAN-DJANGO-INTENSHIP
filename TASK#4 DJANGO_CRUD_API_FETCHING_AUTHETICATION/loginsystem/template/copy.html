@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: bold;
+        }
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+        .dashboard-container {
+            width: 80%;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .dashboard-container h1 {
+            margin-top: 0;
+        }
+        .dashboard-container button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .dashboard-container .update-btn {
+            background-color: #28a745;
+            color: white;
+        }
+        .dashboard-container .update-btn:hover {
+            background-color: #218838;
+        }
+        .dashboard-container .logout-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+        .dashboard-container .logout-btn:hover {
+            background-color: #c82333;
+        }
+        .dashboard-container form {
+            margin-top: 20px;
+        }
+        .dashboard-container label {
+            display: block;
+            margin-bottom: 8px;
+        }
+        .dashboard-container input, .dashboard-container select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .weather-info {
+            display: none;
+        }
+        table tr td {
+            border:2px solid black;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-brand">Welcome <b>{{ username }} </b> to Weather App</div>
+        <div class="navbar-links">
+            <a href="#" id="update-menu">Check Profile</a>
+            <a href="#" id="reset_pass">Reset Password</a>
+
+            <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="logout-btn">Logout</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="dashboard-container">
+        <h1>Weather Dashboard</h1>
+        
+        <!-- Weather search form -->
+        <div>
+            <label for="city">Search City:</label>
+            <input type="text" id="city" name="city" placeholder="Enter city name">
+            <button id="search-btn">Search</button>
+        </div>
+
+        <!-- Weather info section -->
+        <div class="weather-info" id="weather-info">
+            <h2>Weather Information</h2>
+            <p id="weather-description">Fetching weather information...</p>
+            <p id="weather-temp">Temperature: --°C</p>
+            <p id="weather-location">Location: --</p>
+        </div>
+
+        <!-- Update profile form -->
+        <div id="update-form" style="display: none;">
+            <table>
+                <tr>
+                    <th>NAME</th>
+                    <th>EMAIL</th>
+                    <th>PHONE NO</th>
+                    <th>DOB</th>
+                </tr>
+                {%for col in col2%}
+                <tr>
+                    <td>{{col.name}}</td>
+                    <td>{{col.email}}</td>
+                    <td>{{col.phno}}</td>
+                    <td>{{col.dob}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div id="resetpassw" style="display: none;">
+            <h2>RESET PASSWORD</h2>
+            <form method="POST">
+                <label for="email">PREVIOUS PASSWORD</label>
+                <input type="email" id="email" name="email" required>
+                
+                <label for="password">NEW Password:</label>
+                <input type="password" id="password" name="password">
+                
+                <button type="submit" class="update-btn">Update Profile</button>
+            </form>
+        
+        </div>
+    </div>
+    
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const weatherInfo = document.getElementById('weather-info');
+            const updateMenu = document.getElementById('update-menu');
+            const logoutMenu = document.getElementById('logout-menu');
+            const updateForm = document.getElementById('update-form');
+            const searchBtn = document.getElementById('search-btn');
+            const cityInput = document.getElementById('city');
+            const resetpass = document.getElementById('reset_pass');
+            const reset=document.getElementById('reset_passw');
+
+            // Function to fetch weather data
+            async function fetchWeather(city) {
+                const apiKey = 'bfe19288dc6ac25f1629965ece230386'; // Replace with your OpenWeatherMap API key
+                const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
+
+                try {
+                    const response = await fetch(url);
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        document.getElementById('weather-description').textContent = `Weather: ${data.weather[0].description}`;
+                        document.getElementById('weather-temp').textContent = `Temperature: ${data.main.temp}°C`;
+                        document.getElementById('weather-location').textContent = `Location: ${data.name}`;
+                        weatherInfo.style.display = 'block';
+                    } else {
+                        document.getElementById('weather-description').textContent = 'Weather information not available.';
+                        weatherInfo.style.display = 'block';
+                    }
+                } catch (error) {
+                    console.error('Error fetching weather data:', error);
+                }
+            }
+
+            // Handle search button click
+            searchBtn.addEventListener('click', () => {
+                const city = cityInput.value.trim();
+                if (city) {
+                    fetchWeather(city);
+                } else {
+                    alert('Please enter a city name.');
+                }
+            });
+
+            // Show the update form when "Update Profile" is clicked
+            updateMenu.addEventListener('click', (e) => {
+                e.preventDefault();
+                updateForm.style.display = updateForm.style.display === 'none' ? 'block' : 'none';
+            });
+            resetpass.addEventListener('click', (e) => {
+                e.preventDefault();
+                reset.style.display = reset.style.display === 'none' ? 'block' : 'none';
+            });
+
+            // Handle logout action
+            logoutMenu.addEventListener('click', (e) => {
+                e.preventDefault();
+                alert('Logging out...');
+                // Redirect or perform logout logic
+            });
+        });
+    </script>
+</body>
+</html>
